@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../data/products";
@@ -55,11 +54,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div className="mt-2 flex items-center gap-2">
             {product.discountedPrice ? (
               <>
-                <span className="font-bold text-destructive">${product.discountedPrice.toFixed(2)}</span>
-                <span className="text-sm text-muted-foreground line-through">${product.price.toFixed(2)}</span>
+                <span className="font-bold text-destructive">₹{product.discountedPrice.toFixed(2)}</span>
+                <span className="text-sm text-muted-foreground line-through">₹{product.price.toFixed(2)}</span>
               </>
             ) : (
-              <span className="font-bold">${product.price.toFixed(2)}</span>
+              <span className="font-bold">₹{product.price.toFixed(2)}</span>
             )}
           </div>
         </CardContent>

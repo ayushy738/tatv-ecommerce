@@ -8,17 +8,17 @@ export interface Category {
 export const categories: Category[] = [
   {
     id: "c1",
-    name: "Electronics",
+    name: "Women",
     image: "/placeholder.svg"
   },
   {
     id: "c2",
-    name: "Fashion",
+    name: "Sports Shoes",
     image: "/placeholder.svg"
   },
   {
     id: "c3",
-    name: "Home & Kitchen",
+    name: "Sliders & Flip Flops",
     image: "/placeholder.svg"
   },
   {
