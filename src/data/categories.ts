@@ -9,7 +9,7 @@ export const categories: Category[] = [
   {
     id: "c1",
     name: "Women",
-    image: "/placeholder.svg"
+    image: "/products/pink-low-heels.jpg"
   },
   {
     id: "c2",
@@ -23,7 +23,7 @@ export const categories: Category[] = [
   },
   {
     id: "c4",
-    name: "Beauty",
+    name: "Electronic Accessories",
     image: "/placeholder.svg"
   },
   {
