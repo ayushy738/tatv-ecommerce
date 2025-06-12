@@ -1,0 +1,98 @@
+import axios from "axios";
+import {
+  createContext,
+  useEffect,
+  useState,
+  ReactNode,
+  FC,
+} from "react";
+import { toast } from "react-toastify";
+
+
+// Define User data type
+interface UserData {
+  name: string;
+  email: string;
+  isAccountVerified: boolean;
+  // Add other properties from your user model as needed
+}
+
+// Define context type
+interface AppContextType {
+  backendUrl: string;
+  isLoggedin: boolean;
+  setIsLoggedin: (value: boolean) => void;
+  userData: UserData | null;
+  setUserData: (user: UserData | null) => void;
+  getUserData: () => Promise<void>;
+  isAccountVerified: boolean;
+  token: string;
+  setToken: (token: string) => void;
+}
+
+// Initial default value
+export const AppContent = createContext<AppContextType>({} as AppContextType);
+
+// Props type for provider
+interface AppProviderProps {
+  children: ReactNode;
+}
+
+export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
+  axios.defaults.withCredentials = true;
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
+
+  const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+
+  const getAuthState = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`);
+      if (data.success) {
+        setIsLoggedin(true);
+        await getUserData();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to fetch auth state");
+    }
+  };
+  
+  const getUserData = async () => {
+    try {
+      const { data } = await axios.get(`${backendUrl}/api/user/data`);
+      if (data.success) {
+        setUserData(data.user);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to fetch user data");
+    }
+  };
+
+  useEffect(() => {
+    getAuthState();
+  }, []);
+
+  const contextValue: AppContextType = {
+    backendUrl,
+    isLoggedin,
+    setIsLoggedin,
+    userData,
+    setUserData,
+    getUserData,
+    isAccountVerified: userData?.isAccountVerified || false,
+    token,
+    setToken,
+  };
+
+  return (
+    <AppContent.Provider value={contextValue}>
+      {children}
+    </AppContent.Provider>
+  );
+};
