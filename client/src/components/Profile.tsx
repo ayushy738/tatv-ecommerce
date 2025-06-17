@@ -25,12 +25,15 @@ const Profile: React.FC = () => {
     setIsLoggedin,
     userData,
     setUserData,
+    setToken,
   } = useContext(AppContent) as {
     backendUrl: string;
     isLoggedin: boolean;
     setIsLoggedin: (status: boolean) => void;
     userData: any; // Adjust type as needed
-    setUserData: (data: any) => void; // Adjust type as needed
+    setUserData: (data: any) => void;
+    token: string;
+    setToken: (token: string) => void; // Adjust type as needed
   };
 
   const isLoggedIn = !!userData;
@@ -42,8 +45,10 @@ const Profile: React.FC = () => {
       if (data.message === "Logout successful") {
         setIsLoggedin(false);
         setUserData(null);
+        localStorage.removeItem("token");
+        setToken('') // Clear token from local storage
         toast.success("Logout successful");
-        navigate("/");
+        navigate("/login");
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Logout failed");
@@ -76,7 +81,6 @@ const Profile: React.FC = () => {
       );
       if (data.message === "OTP sent successfully") {
         toast.success("OTP sent to your email.");
-        toast.info("Navigating to /verify-account...");
         navigate("/verify-account", {
           state: { email: userData?.email },
         });
@@ -107,9 +111,6 @@ const Profile: React.FC = () => {
                 🔐 Verify Account
               </DropdownMenuItem>
             )}
-            <DropdownMenuItem asChild>
-              <Link to="/profile">👤 Profile</Link>
-            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link to="/orders">🛍 My Orders</Link>
             </DropdownMenuItem>

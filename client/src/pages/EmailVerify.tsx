@@ -98,7 +98,6 @@ const EmailVerify: React.FC = () => {
           </form>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

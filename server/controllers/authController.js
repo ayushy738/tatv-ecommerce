@@ -95,10 +95,7 @@ export const login = async (req, res) => {
             sameSite: process.env.NODE_ENV === 'production'?'none':'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
-
-     
-
-        res.status(200).json({ message: "Login successful" });
+        res.json({success: true, token});
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ message: "Server error" });
@@ -289,7 +286,7 @@ export const resetPassword = async (req, res) => {
 export const adminLogin = async (req, res) => {
     const { email, password } = req.body;
     if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
-        const token = jwt.sign(email+password,process.env.JWT_SECRET);
+        const token = jwt.sign({email},process.env.JWT_SECRET,{ expiresIn: '7d' });
         res.json({success: true, token});
     }else{
         res.status(400).json({message: "Invalid admin credentials",success: false}); 

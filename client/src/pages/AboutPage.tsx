@@ -169,9 +169,9 @@ const AboutPage: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                { name: "Agmoth Kalyan", role: "CEO & Founder", image: "https://res.cloudinary.com/dm3sc3use/image/upload/v1749665939/kalyan_ql0f0b.jpg" },
+                { name: "Amgoth Kalyan", role: "CEO & Founder", image: "https://res.cloudinary.com/dm3sc3use/image/upload/v1749665939/kalyan_ql0f0b.jpg" },
                 { name: "Ayush Raj Yadav", role: "Web Devloper And Manager", image: "https://res.cloudinary.com/dm3sc3use/image/upload/v1749665671/ayush_tejrmq.jpg" },
-                { name: "Sairaj Raithatha", role: "Marketing Head And Advisor", image: "https://res.cloudinary.com/dm3sc3use/image/upload/v1749665671/sairaj_tcvhg6.jpg" }
+                { name: "Sairaj Raithatha", role: "Marketing Head And Advisor", image: "https://res.cloudinary.com/dm3sc3use/image/upload/v1749726162/sairaj_tcvhg6.jpg" }
               ].map((member, index) => (
                 <Card key={index} className="text-center overflow-hidden border-0 shadow-lg hover:shadow-xl transition-shadow">
                   <div className="aspect-square overflow-hidden">

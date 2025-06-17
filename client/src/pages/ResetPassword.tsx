@@ -168,7 +168,7 @@ const ResetPassword: React.FC = () => {
         </div>
       </main>
 
-      <Footer />
+      
     </div>
   );
 };

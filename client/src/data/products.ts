@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -19,46 +20,48 @@ export interface Product {
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
+// Generate random discounted price between 1000-2000
+const generateDiscountedPrice = (): number => {
+  return Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
+};
+
 export const getProductData = async (): Promise<Product[]> => {
   try {
     const response = await axios.get(backendUrl + '/api/product/list');
 
-    if (response.data.success) {
+    if (response.data.success && Array.isArray(response.data.products)) {
       return response.data.products.map((product: any) => {
-        // Normalize sizes for applicable subcategories
-        let sizes: number[] | undefined = undefined;
         const sizeSubCategories = ['Shoes', 'Sandals', 'Slippers'];
-        if (sizeSubCategories.includes(product.subCategory)) {
-          sizes = [6, 7, 8, 9, 10, 11];
-        }
+        const sizes: number[] | undefined = sizeSubCategories.includes(product.subCategory)
+          ? [6, 7, 8, 9, 10, 11]
+          : undefined;
 
         return {
           id: product._id,
-          name: product.name,
-          description: product.description,
-          price: product.price,
-          discountedPrice: product.discountedPrice,
-          image: product.image,
-          category: product.category,
-          subCategory: product.subCategory,
-          sizes: sizes, // will be undefined for other subcategories
-          bestseller: product.bestseller,
-          rating: product.rating || 4.5,
-          reviewCount: product.reviewCount || 0,
-          stock: product.stock || 10,
+          name: product.name ?? 'Unnamed Product',
+          description: product.description ?? '',
+          price: product.price ?? 0,
+          discountedPrice: generateDiscountedPrice(), // Always add random discounted price
+          image: product.image ?? '',
+          category: product.category ?? '',
+          subCategory: product.subCategory ?? '',
+          sizes,
+          bestseller: product.bestseller ?? false,
+          rating: product.rating ?? 4.5,
+          reviewCount: product.reviewCount ?? 0,
+          stock: product.stock ?? 10,
         };
       });
     } else {
-      console.error('Failed to fetch products:', response.data.message);
-      toast.error('Failed to fetch products: ' + response.data.message);
+      console.error("Invalid product data response:", response.data);
       return [];
     }
   } catch (error) {
-    console.error('Error fetching product data:', error);
-    toast.error('Failed to connect to server');
+    console.error("Error fetching product list:", error);
     return [];
   }
-}
+};
+
 
 // Cache for products
 let cachedProducts: Product[] = [];
@@ -112,6 +115,52 @@ export function getProductsByCategory(category: string): Product[] {
   return cachedProducts.filter(product => 
     product.category.toLowerCase() === category.toLowerCase()
   );
+}
+
+export function getProductsByCategoryAndSubCategory(category: string, subCategory: string): Product[] {
+  return cachedProducts.filter(product => 
+    product.category.toLowerCase() === category.toLowerCase() &&
+    product.subCategory.toLowerCase() === subCategory.toLowerCase()
+  );
+}
+
+// Enhanced search that maps keywords to categories
+export function searchWithKeywordMapping(query: string): { products: Product[], categoryRedirect?: string } {
+  const lowercaseQuery = query.toLowerCase();
+  
+  // Keyword mappings to categories
+  const keywordMappings = {
+    'sport shoes': 'men-shoes',
+    'sports shoes': 'men-shoes',
+    'running shoes': 'men-shoes',
+    'sneakers': 'men-shoes',
+    'men shoes': 'men-shoes',
+    'men slippers': 'men-slippers',
+    'women sandals': 'women-sandals',
+    'women slippers': 'women-slippers',
+    'earbuds': 'earbuds',
+    'earphones': 'earbuds',
+    'headphones': 'earbuds',
+    'watches': 'watches',
+    'smartwatch': 'watches',
+    'smart watch': 'watches',
+  };
+  
+  // Check for exact keyword matches
+  for (const [keyword, categoryId] of Object.entries(keywordMappings)) {
+    if (lowercaseQuery.includes(keyword)) {
+      return { 
+        products: [], 
+        categoryRedirect: categoryId 
+      };
+    }
+  }
+  
+  // If no keyword match, perform regular search
+  return { 
+    products: searchProducts(query), 
+    categoryRedirect: undefined 
+  };
 }
 
 // For backwards compatibility, expose products as a reactive array

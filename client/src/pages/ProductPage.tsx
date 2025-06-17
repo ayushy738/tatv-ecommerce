@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import ProductReviews from "../components/ProductReviews";
 import { Rating } from "./components/Rating";
 import { getProducts, getProductById, Product } from "../data/products";
 import { useCart } from "../context/CartContext";
@@ -12,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Heart, ShoppingCart, Share2, Minus, Plus, Truck, Shield, RotateCcw, Star } from "lucide-react";
+import { Heart, ShoppingCart, Share2, Minus, Plus, Truck, Shield, RotateCcw } from "lucide-react";
 
 const ProductPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,7 +32,7 @@ const ProductPage: React.FC = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        await getProducts(); // Ensure products are loaded
+        await getProducts();
         if (id) {
           const foundProduct = getProductById(id);
           setProduct(foundProduct || null);
@@ -86,11 +88,12 @@ const ProductPage: React.FC = () => {
 
   const handleBuyNow = () => {
     if (!requireAuth('purchase items')) return;
-    navigate(`/buy-now/${product.id}`);
+    addToCart(product, quantity, selectedSize);
+    navigate('/cart')
   };
 
   const discountPercentage = product.discountedPrice 
-    ? Math.round(((product.price - product.discountedPrice) / product.price) * 100)
+    ? Math.round(((product.discountedPrice - product.price) / product.discountedPrice) * 100)
     : 0;
 
   const deliveryDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {
@@ -158,19 +161,13 @@ const ProductPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Price */}
+              {/* Price - Always show discounted price */}
               <div className="flex items-center gap-4">
-                {product.discountedPrice ? (
-                  <>
-                    <span className="text-3xl font-bold text-green-600">₹{product.discountedPrice}</span>
-                    <span className="text-xl text-gray-500 line-through">₹{product.price}</span>
-                    <span className="text-lg text-green-600 font-semibold">
-                      Save ₹{product.price - product.discountedPrice}
-                    </span>
-                  </>
-                ) : (
-                  <span className="text-3xl font-bold text-gray-900">₹{product.price}</span>
-                )}
+                <span className="text-3xl font-bold text-green-600">₹{product.price}</span>
+                <span className="text-xl text-gray-500 line-through">₹{product.discountedPrice}</span>
+                <span className="text-lg text-green-600 font-semibold">
+                  Save ₹{product.discountedPrice - (product.price || 0)}
+                </span>
               </div>
 
               {/* Size Selection */}
@@ -293,11 +290,10 @@ const ProductPage: React.FC = () => {
           {/* Product Details Tabs */}
           <div className="mt-16">
             <Tabs defaultValue="description" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="description">Description</TabsTrigger>
                 <TabsTrigger value="specifications">Specifications</TabsTrigger>
                 <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                <TabsTrigger value="faq">FAQ</TabsTrigger>
               </TabsList>
               
               <TabsContent value="description" className="mt-6">
@@ -335,30 +331,30 @@ const ProductPage: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-3">
                         <div className="flex justify-between">
-                          <span className="font-medium">Brand:</span>
-                          <span>Tatv</span>
-                        </div>
-                        <div className="flex justify-between">
                           <span className="font-medium">Category:</span>
                           <span className="capitalize">{product.category}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="font-medium">Weight:</span>
-                          <span>1.2 kg</span>
+                          <span className="font-medium">Sub Category:</span>
+                          <span className="capitalize">{product.subCategory}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="font-medium">Stock:</span>
+                          <span>{product.stock || 0} units</span>
                         </div>
                       </div>
                       <div className="space-y-3">
                         <div className="flex justify-between">
-                          <span className="font-medium">Material:</span>
-                          <span>Premium Quality</span>
+                          <span className="font-medium">Rating:</span>
+                          <span>{product.rating || 4.5}/5</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="font-medium">Warranty:</span>
-                          <span>1 Year</span>
+                          <span className="font-medium">Reviews:</span>
+                          <span>{product.reviewCount || 0}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="font-medium">Origin:</span>
-                          <span>India</span>
+                          <span className="font-medium">Bestseller:</span>
+                          <span>{product.bestseller ? 'Yes' : 'No'}</span>
                         </div>
                       </div>
                     </div>
@@ -367,51 +363,7 @@ const ProductPage: React.FC = () => {
               </TabsContent>
               
               <TabsContent value="reviews" className="mt-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-4">Customer Reviews</h3>
-                    <div className="space-y-6">
-                      {[1, 2, 3].map((review) => (
-                        <div key={review} className="border-b pb-4">
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="flex">
-                              {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400" />
-                              ))}
-                            </div>
-                            <span className="font-medium">John Doe</span>
-                            <span className="text-sm text-gray-500">2 days ago</span>
-                          </div>
-                          <p className="text-gray-700">
-                            Excellent product! Great quality and fast delivery. Highly recommended.
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="faq" className="mt-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <h4 className="font-medium mb-2">What is the return policy?</h4>
-                        <p className="text-gray-700">We offer a 30-day return policy for all products in original condition.</p>
-                      </div>
-                      <div>
-                        <h4 className="font-medium mb-2">How long does shipping take?</h4>
-                        <p className="text-gray-700">Standard shipping takes 2-3 business days, express shipping takes 1-2 days.</p>
-                      </div>
-                      <div>
-                        <h4 className="font-medium mb-2">Is this product covered under warranty?</h4>
-                        <p className="text-gray-700">Yes, this product comes with a 1-year manufacturer warranty.</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <ProductReviews productId={product.id} />
               </TabsContent>
             </Tabs>
           </div>

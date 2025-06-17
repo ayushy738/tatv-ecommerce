@@ -1,4 +1,5 @@
 import axios from "axios";
+import { set } from "date-fns";
 import {
   createContext,
   useEffect,
@@ -89,6 +90,12 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
     token,
     setToken,
   };
+  useEffect(() => {
+  if (token) {
+    localStorage.setItem('token', token);
+  }
+}, [token]);
+
 
   return (
     <AppContent.Provider value={contextValue}>

@@ -2,13 +2,13 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
+import CategoryCarousel from "../components/CategoryCarousel";
 import FlashSalesCarousel from "../components/FlashSalesCarousel";
-import CategoryBanner from "../components/CategoryBanner";
 import HeroCarousel from "../components/HeroCarousel";
-import { getProducts, Product } from "../data/products";
+import { getProducts, getProductsByCategoryAndSubCategory, Product } from "../data/products";
+import { categories, getMainCategories } from "../data/categories";
 import { Badge } from "@/components/ui/badge";
-import { Zap, TrendingUp, ShoppingBag } from "lucide-react";
+import { Zap, ShoppingBag } from "lucide-react";
 
 const LandingPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -31,10 +31,13 @@ const LandingPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col min-h-screen bg-gray-50">
+      <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
         <Navbar />
         <main className="flex-grow flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent mx-auto"></div>
+            <p className="text-gray-600 font-medium">Loading amazing products...</p>
+          </div>
         </main>
         <Footer />
       </div>
@@ -42,11 +45,10 @@ const LandingPage: React.FC = () => {
   }
 
   const flashSaleProducts = products.filter(p => p.discountedPrice).slice(0, 8);
-  const trendingProducts = products.filter(p => p.bestseller).slice(0, 8);
-  const newArrivals = products.slice(0, 6);
+  const mainCategories = getMainCategories();
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       <Navbar />
       
       <main className="flex-grow">
@@ -57,76 +59,60 @@ const LandingPage: React.FC = () => {
           </div>
         </section>
 
-        <div className="container py-12">
+        <div className="container py-12 space-y-16">
           {/* Category Banner */}
-          <CategoryBanner />
+          
 
           {/* Flash Sales */}
           {flashSaleProducts.length > 0 && (
-            <section className="mb-16">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-red-100 rounded-full">
-                    <Zap className="h-6 w-6 text-red-600" />
+            <section className="space-y-8">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-red-100 rounded-full">
+                    <Zap className="h-8 w-8 text-red-600" />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-gray-900">Flash Sales</h2>
-                    <p className="text-gray-600">Limited time offers - Grab them fast!</p>
+                    <h2 className="text-4xl font-bold text-gray-900">Flash Sales</h2>
+                    <p className="text-gray-600 text-lg">Limited time offers - Grab them fast!</p>
                   </div>
                 </div>
-                <Badge className="bg-red-500 text-white animate-pulse">
-                  Ends Soon!
+                <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse text-lg px-4 py-2">
+                  Ends Soon! ⚡
                 </Badge>
               </div>
               <FlashSalesCarousel products={flashSaleProducts} />
             </section>
           )}
 
-          {/* Trending Products */}
-          {trendingProducts.length > 0 && (
-            <section className="mb-16">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2 bg-orange-100 rounded-full">
-                  <TrendingUp className="h-6 w-6 text-orange-600" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900">Trending Now</h2>
-                  <p className="text-gray-600">Most popular products this week</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {trendingProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* New Arrivals */}
-          {newArrivals.length > 0 && (
-            <section>
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2 bg-blue-100 rounded-full">
-                  <ShoppingBag className="h-6 w-6 text-blue-600" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900">New Arrivals</h2>
-                  <p className="text-gray-600">Fresh products just for you</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {newArrivals.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            </section>
-          )}
+          {/* Category Carousels */}
+          <div className="space-y-20">
+            {categories.map((category) => {
+              const categoryProducts = getProductsByCategoryAndSubCategory(
+                category.category, 
+                category.subCategory
+              ).slice(0, 10);
+              
+              return (
+                <CategoryCarousel
+                  key={category.id}
+                  categoryName={category.name}
+                  categoryId={category.id}
+                  products={categoryProducts}
+                />
+              );
+            })}
+          </div>
 
           {/* No Products Message */}
           {products.length === 0 && (
-            <div className="text-center py-16">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Products Available</h3>
-              <p className="text-gray-600">Products will appear here once they're loaded from the server.</p>
+            <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
+              <div className="space-y-4">
+                <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+                  <ShoppingBag className="h-12 w-12 text-gray-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900">No Products Available</h3>
+                <p className="text-gray-600 text-lg">Products will appear here once they're loaded from the server.</p>
+              </div>
             </div>
           )}
         </div>

@@ -1,11 +1,10 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, TrendingUp } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { products } from "../data/products";
+import { products, searchWithKeywordMapping } from "../data/products";
 import { categories } from "../data/categories";
 
 const SearchBar: React.FC = () => {
@@ -15,7 +14,7 @@ const SearchBar: React.FC = () => {
   const navigate = useNavigate();
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const trendingKeywords = ["smartwatch", "sports shoes", "sliders", "sandals", "earphones"];
+  const trendingKeywords = ["sport shoes", "women sandals", "earbuds", "watches", "men slippers"];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -66,7 +65,13 @@ const SearchBar: React.FC = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      const { categoryRedirect } = searchWithKeywordMapping(searchQuery.trim());
+      
+      if (categoryRedirect) {
+        navigate(`/category/${categoryRedirect}`);
+      } else {
+        navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      }
       setShowSuggestions(false);
     }
   };
@@ -77,8 +82,13 @@ const SearchBar: React.FC = () => {
     } else if (suggestion.type === 'category') {
       navigate(`/category/${suggestion.item.id}`);
     } else {
-      setSearchQuery(suggestion.item);
-      navigate(`/search?q=${encodeURIComponent(suggestion.item)}`);
+      const { categoryRedirect } = searchWithKeywordMapping(suggestion.item);
+      if (categoryRedirect) {
+        navigate(`/category/${categoryRedirect}`);
+      } else {
+        setSearchQuery(suggestion.item);
+        navigate(`/search?q=${encodeURIComponent(suggestion.item)}`);
+      }
     }
     setShowSuggestions(false);
   };
@@ -137,7 +147,7 @@ const SearchBar: React.FC = () => {
                 {suggestion.type === 'product' && (
                   <>
                     <img 
-                      src={suggestion.item.image} 
+                      src={suggestion.item.image[0]} 
                       alt={suggestion.item.name}
                       className="w-8 h-8 object-cover rounded"
                     />

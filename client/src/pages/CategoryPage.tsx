@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
-import { getProducts, getProductsByCategory, Product } from "../data/products";
+import { getProducts, getProductsByCategoryAndSubCategory, Product } from "../data/products";
 import { categories } from "../data/categories";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,9 +21,12 @@ const CategoryPage: React.FC = () => {
     const fetchCategoryProducts = async () => {
       setLoading(true);
       try {
-        await getProducts(); // Ensure products are loaded
-        if (categoryId) {
-          const products = getProductsByCategory(categoryId);
+        await getProducts();
+        if (category) {
+          const products = getProductsByCategoryAndSubCategory(
+            category.category, 
+            category.subCategory
+          );
           setCategoryProducts(products);
         }
       } catch (error) {
@@ -35,7 +37,7 @@ const CategoryPage: React.FC = () => {
     };
 
     fetchCategoryProducts();
-  }, [categoryId]);
+  }, [category]);
 
   if (loading) {
     return (
@@ -76,7 +78,7 @@ const CategoryPage: React.FC = () => {
               <Badge className="mb-4 bg-white/20 text-white">{category.name}</Badge>
               <h1 className="text-4xl font-bold mb-4">{category.name} Collection</h1>
               <p className="text-xl opacity-90 max-w-2xl mx-auto">
-                Discover our amazing collection of {category.name.toLowerCase()} products
+                Discover our amazing collection of {category.name.toLowerCase()}
               </p>
             </div>
           </div>

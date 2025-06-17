@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ProductCard from "../components/ProductCard";
-import { getProducts, searchProducts, Product } from "../data/products";
+import { getProducts, searchWithKeywordMapping, Product } from "../data/products";
 import {
   Select,
   SelectContent,
@@ -16,6 +15,7 @@ import {
 
 const SearchPage: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("q") || "";
   
@@ -28,11 +28,17 @@ const SearchPage: React.FC = () => {
     const fetchAndSearch = async () => {
       setLoading(true);
       try {
-        await getProducts(); // Ensure products are loaded
+        await getProducts();
         if (query) {
-          const foundProducts = searchProducts(query);
-          setResults(foundProducts);
-          setFilteredResults(foundProducts);
+          const { products, categoryRedirect } = searchWithKeywordMapping(query);
+          
+          if (categoryRedirect) {
+            navigate(`/category/${categoryRedirect}`);
+            return;
+          }
+          
+          setResults(products);
+          setFilteredResults(products);
         }
       } catch (error) {
         console.error('Error searching products:', error);
@@ -42,7 +48,7 @@ const SearchPage: React.FC = () => {
     };
 
     fetchAndSearch();
-  }, [query]);
+  }, [query, navigate]);
   
   useEffect(() => {
     // Apply sorting

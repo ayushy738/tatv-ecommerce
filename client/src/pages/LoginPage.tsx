@@ -21,7 +21,7 @@ const Login: React.FC = () => {
     setToken: (token: string) => void;
   };
 
-  const [state, setState] = useState<AuthState>('Sign Up');
+  const [state, setState] = useState<AuthState>('Login');
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -41,6 +41,7 @@ const Login: React.FC = () => {
         if (data.message === 'User registered successfully') {
           setIsLoggedin(true);
           setToken(data.token);
+          
           localStorage.setItem('token',data.token) // Set token in context
           await getUserData();
           toast.success('Registration successful');
@@ -53,11 +54,13 @@ const Login: React.FC = () => {
           email,
           password,
         });
-
-        if (data.message === 'Login successful') {
+     
+        if (data.success) {
           setIsLoggedin(true);
           setToken(data.token);
+          
           localStorage.setItem('token',data.token) 
+          
           await getUserData();
           toast.success('Login successful');
           navigate('/');
@@ -181,7 +184,6 @@ const Login: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

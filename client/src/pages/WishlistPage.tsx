@@ -23,7 +23,11 @@ const WishlistPage: React.FC = () => {
   };
 
   const handleBuyNow = (productId: string) => {
-    navigate(`/buy-now/${productId}`);
+    const product = wishlistItems.find(p => p.id === productId);
+    if (product) {
+      addToCart(product, 1);
+    }
+    navigate("/checkout")
   };
   
   if (wishlistItems.length === 0) {

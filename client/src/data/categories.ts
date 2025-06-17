@@ -3,32 +3,62 @@ export interface Category {
   id: string;
   name: string;
   image: string;
+  category: string;
+  subCategory: string;
 }
 
 export const categories: Category[] = [
   {
-    id: "c1",
-    name: "Women",
-    image: "/products/pink-low-heels.jpg"
+    id: "men-shoes",
+    name: "Men Shoes",
+    image: "/placeholder.svg",
+    category: "Men",
+    subCategory: "Shoes"
   },
   {
-    id: "c2",
-    name: "Sports Shoes",
-    image: "/placeholder.svg"
+    id: "men-slippers",
+    name: "Men Slippers",
+    image: "/placeholder.svg",
+    category: "Men",
+    subCategory: "Slippers"
   },
   {
-    id: "c3",
-    name: "Sliders & Flip Flops",
-    image: "/placeholder.svg"
+    id: "women-sandals",
+    name: "Women Sandals",
+    image: "/placeholder.svg",
+    category: "Women",
+    subCategory: "Sandals"
   },
   {
-    id: "c4",
-    name: "Electronic Accessories",
-    image: "/placeholder.svg"
+    id: "watches",
+    name: "Watches",
+    image: "/placeholder.svg",
+    category: "Electonics",
+    subCategory: "Watches"
+  },  
+  {
+    id: "women-slippers",
+    name: "Women Slippers",
+    image: "/placeholder.svg",
+    category: "Women",
+    subCategory: "Slippers"
   },
-  // {
-  //   id: "c5",
-  //   name: "Sports & Outdoors",
-  //   image: "/placeholder.svg"
-  // }
+  {
+    id: "earbuds",
+    name: "Earbuds",
+    image: "/placeholder.svg",
+    category: "Electonics",
+    subCategory: "EarBuds"
+  }
 ];
+
+// Get all unique main categories
+export const getMainCategories = (): string[] => {
+  const uniqueCategories = [...new Set(categories.map(cat => cat.category))];
+  return uniqueCategories;
+};
+
+// Get all categories for display
+export const getAllCategories = (): Category[] => {
+  return categories;
+};
