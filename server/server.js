@@ -20,7 +20,7 @@ connectCloudinary()
 
 const allowedOrigins = [
   'http://localhost:8080','http://localhost:8081','https://tatv-ecommerce-frontend.vercel.app'
-  ,'https://tatv-ecommerce-admin.vercel.app/', // Replace with your production domain
+  ,'https://tatv-ecommerce-admin.vercel.app', // Replace with your production domain
 ]
 
 app.use(cors({origin:allowedOrigins,credentials : true}))
