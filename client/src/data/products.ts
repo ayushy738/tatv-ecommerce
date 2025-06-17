@@ -20,10 +20,7 @@ export interface Product {
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
-// Generate random discounted price between 1000-2000
-const generateDiscountedPrice = (): number => {
-  return Math.floor(Math.random() * (2000 - 1000 + 1)) + 1000;
-};
+
 
 export const getProductData = async (): Promise<Product[]> => {
   try {
@@ -41,7 +38,7 @@ export const getProductData = async (): Promise<Product[]> => {
           name: product.name ?? 'Unnamed Product',
           description: product.description ?? '',
           price: product.price ?? 0,
-          discountedPrice: generateDiscountedPrice(), // Always add random discounted price
+           // Always add random discounted price
           image: product.image ?? '',
           category: product.category ?? '',
           subCategory: product.subCategory ?? '',
