@@ -60,7 +60,7 @@ const HeroCarousel: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-96 md:h-[400px] overflow-hidden rounded-2xl shadow-2xl">
+    <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[400px] overflow-hidden rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl">
       {/* Slides Container */}
       <div 
         className="flex transition-transform duration-500 ease-in-out h-full"
@@ -81,16 +81,16 @@ const HeroCarousel: React.FC = () => {
             </div>
 
             {/* Content Overlay */}
-            <div className="relative z-10 h-full flex flex-col justify-center items-center text-center text-white px-6">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 animate-fade-in transform transition-all duration-700 group-hover:scale-110">
+            <div className="relative z-10 h-full flex flex-col justify-center items-center text-center text-white px-4 sm:px-6">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-2 md:mb-4 animate-fade-in transform transition-all duration-700 group-hover:scale-110">
                 {slide.category}
               </h1>
-              <p className="text-lg md:text-xl mb-8 max-w-2xl opacity-90 animate-slide-up">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 md:mb-8 max-w-2xl opacity-90 animate-slide-up">
                 {slide.tagline}
               </p>
               <Button
                 size="lg"
-                className="bg-white text-black hover:bg-gray-100 text-lg px-8 py-3 transform transition-all duration-300 hover:scale-105 animate-bounce"
+                className="bg-white text-black hover:bg-gray-100 text-sm md:text-lg px-4 py-2 md:px-8 md:py-3 transform transition-all duration-300 hover:scale-105 animate-bounce"
                 onClick={(e) => {
                   e.preventDefault();
                   window.location.href = slide.productLink;
@@ -106,27 +106,27 @@ const HeroCarousel: React.FC = () => {
       {/* Navigation Arrows */}
       <button
         onClick={prevSlide}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200 hover:scale-110"
+        className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-1.5 md:p-2 transition-all duration-200 hover:scale-110"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="h-6 w-6 text-white" />
+        <ChevronLeft className="h-4 w-4 md:h-6 md:w-6 text-white" />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-2 transition-all duration-200 hover:scale-110"
+        className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-full p-1.5 md:p-2 transition-all duration-200 hover:scale-110"
         aria-label="Next slide"
       >
-        <ChevronRight className="h-6 w-6 text-white" />
+        <ChevronRight className="h-4 w-4 md:h-6 md:w-6 text-white" />
       </button>
 
       {/* Dots Indicator */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+      <div className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-1.5 md:space-x-2">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full transition-all duration-200 ${
+            className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-200 ${
               index === currentSlide
                 ? 'bg-white scale-125'
                 : 'bg-white/50 hover:bg-white/75'

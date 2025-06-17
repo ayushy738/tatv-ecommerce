@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -44,7 +45,7 @@ const CategoryPage: React.FC = () => {
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-8 w-8 md:h-12 md:w-12 border-b-2 border-blue-600"></div>
         </main>
         <Footer />
       </div>
@@ -55,10 +56,10 @@ const CategoryPage: React.FC = () => {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-grow flex items-center justify-center">
+        <main className="flex-grow flex items-center justify-center px-4">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Category Not Found</h1>
-            <p className="text-gray-600">The category you're looking for doesn't exist.</p>
+            <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">Category Not Found</h1>
+            <p className="text-gray-600 text-sm md:text-base">The category you're looking for doesn't exist.</p>
           </div>
         </main>
         <Footer />
@@ -72,12 +73,12 @@ const CategoryPage: React.FC = () => {
       
       <main className="flex-grow">
         {/* Category Header */}
-        <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-16 text-white">
-          <div className="container">
+        <section className="bg-gradient-to-r from-blue-600 to-purple-600 py-12 md:py-16 text-white">
+          <div className="container px-4">
             <div className="text-center">
-              <Badge className="mb-4 bg-white/20 text-white">{category.name}</Badge>
-              <h1 className="text-4xl font-bold mb-4">{category.name} Collection</h1>
-              <p className="text-xl opacity-90 max-w-2xl mx-auto">
+              <Badge className="mb-4 bg-white/20 text-white text-xs md:text-sm">{category.name}</Badge>
+              <h1 className="text-2xl md:text-4xl font-bold mb-4">{category.name} Collection</h1>
+              <p className="text-base md:text-xl opacity-90 max-w-2xl mx-auto">
                 Discover our amazing collection of {category.name.toLowerCase()}
               </p>
             </div>
@@ -85,23 +86,23 @@ const CategoryPage: React.FC = () => {
         </section>
 
         {/* Filters and Sorting */}
-        <section className="py-8 bg-white border-b">
-          <div className="container">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <section className="py-6 md:py-8 bg-white border-b">
+          <div className="container px-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="flex items-center gap-4">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-base md:text-lg font-semibold text-gray-900">
                   {categoryProducts.length} Products Found
                 </h2>
               </div>
               
-              <div className="flex items-center gap-4">
-                <Button variant="outline" size="sm">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 w-full md:w-auto">
+                <Button variant="outline" size="sm" className="text-sm">
                   <Filter className="h-4 w-4 mr-2" />
                   Filters
                 </Button>
                 
                 <Select defaultValue="relevance">
-                  <SelectTrigger className="w-48">
+                  <SelectTrigger className="w-full sm:w-48 text-sm">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>
@@ -114,10 +115,10 @@ const CategoryPage: React.FC = () => {
                 </Select>
                 
                 <div className="flex border rounded-lg">
-                  <Button variant="ghost" size="sm" className="px-3">
+                  <Button variant="ghost" size="sm" className="px-2 md:px-3">
                     <Grid className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="sm" className="px-3">
+                  <Button variant="ghost" size="sm" className="px-2 md:px-3">
                     <List className="h-4 w-4" />
                   </Button>
                 </div>
@@ -127,18 +128,18 @@ const CategoryPage: React.FC = () => {
         </section>
 
         {/* Products Grid */}
-        <section className="py-12">
-          <div className="container">
+        <section className="py-8 md:py-12">
+          <div className="container px-4">
             {categoryProducts.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
                 {categoryProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
-              <div className="text-center py-16">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No Products Found</h3>
-                <p className="text-gray-600">
+              <div className="text-center py-12 md:py-16">
+                <h3 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">No Products Found</h3>
+                <p className="text-gray-600 text-sm md:text-base">
                   We're working on adding more products to this category. Check back soon!
                 </p>
               </div>
