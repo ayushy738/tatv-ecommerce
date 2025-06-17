@@ -33,7 +33,7 @@ const LandingPage: React.FC = () => {
     fetchProducts();
   }, []);
 
-  const flashSaleProducts = products.filter((p) => p.discountedPrice).slice(0, 8);
+  const flashSaleProducts = products.filter((p) => p.price).slice(0, 8);
   const mainCategories = getMainCategories();
 
   if (loading) {

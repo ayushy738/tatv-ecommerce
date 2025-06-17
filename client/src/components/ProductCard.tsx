@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showAddToCart = true
   };
 
   const discountPercentage = product.discountedPrice 
-    ? Math.round(((product.price - product.discountedPrice) / product.price) * 100)
+    ? Math.round(((product.discountedPrice - product.price) / product.discountedPrice) * 100)
     : 0;
 
   const showDiscountBadge = product.discountedPrice && discountPercentage > 0;
@@ -104,8 +104,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showAddToCart = true
           <div className="flex items-center gap-2 md:gap-3">
             {product.discountedPrice ? (
               <>
-                <span className="text-lg md:text-xl lg:text-2xl font-bold text-green-600">₹{product.discountedPrice}</span>
-                <span className="text-sm md:text-base text-gray-500 line-through">₹{product.price}</span>
+                <span className="text-lg md:text-xl lg:text-2xl font-bold text-green-600">₹{product.price}</span>
+                <span className="text-sm md:text-base text-gray-500 line-through">₹{product.discountedPrice}</span>
               </>
             ) : (
               <span className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900">₹{product.price}</span>
