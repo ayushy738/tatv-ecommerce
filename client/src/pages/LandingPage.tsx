@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CategoryCarousel from "../components/CategoryCarousel";
-import FlashSalesCarousel from "../components/FlashSalesCarousel";
+import CategoryBanner from "@/components/CategoryBanner";
+import FlashSalesCarousel from "../components/FlashSalesCarousel"
 import HeroCarousel from "../components/HeroCarousel";
 import {
   getProducts,
@@ -64,6 +65,7 @@ const LandingPage: React.FC = () => {
         </section>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 space-y-10 md:space-y-16">
+          <CategoryBanner />
           {/* Flash Sales Section */}
           {flashSaleProducts.length > 0 && (
             <section className="space-y-4 md:space-y-6">

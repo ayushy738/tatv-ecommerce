@@ -20,9 +20,11 @@ const Navbar: React.FC = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center group">
-            <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
-              Tatv
-            </span>
+             <img
+          src="/favicon.svg" // Place 'logo.svg' inside public/ folder
+          alt="Tatv Logo"
+          className="h-16 w-auto object-contain"
+        />
           </Link>
           
           {/* Search Bar - Desktop */}

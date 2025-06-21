@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
             <span className="text-xs mt-1">Orders</span>
           </Link>
           
-          <Link to="/chat" className="flex flex-col items-center justify-center text-muted-foreground hover:text-primary transition-colors">
+          <Link to="/shopping-assistant" className="flex flex-col items-center justify-center text-muted-foreground hover:text-primary transition-colors">
             <MessageCircle className="h-5 w-5" />
             <span className="text-xs mt-1">ChatBot</span>
           </Link>
