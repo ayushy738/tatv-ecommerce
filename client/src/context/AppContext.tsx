@@ -90,7 +90,7 @@ const getUserData = async () => {
   } catch (error: any) {
     if (error?.response?.status === 401) {
       toast.error("Session expired. Please log in again.");
-      
+      navigate('/login');
     } else {
       toast.error(error?.response?.data?.message || "Failed to fetch user data");
     }
