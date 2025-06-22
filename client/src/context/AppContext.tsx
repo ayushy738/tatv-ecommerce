@@ -54,8 +54,6 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
       if (data.success) {
         setIsLoggedin(true);
         await getUserData();
-      } else {
-        toast.error(data.message);
       }
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "Failed to fetch auth state");
