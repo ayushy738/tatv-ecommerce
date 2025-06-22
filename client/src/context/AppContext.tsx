@@ -49,24 +49,24 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
-  const getAuthState = async () => {
-    try {
-      const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`);
-      if (data.success) {
-        setIsLoggedin(true);
-        await getUserData();
-        console.log(isLoggedin)
-      }
-    } catch (error: any) {
-      if (error?.response?.status !== 401) {
-        toast.error(error?.response?.data?.message || "Failed to fetch auth state");
-        navigate('/login');
-      }
-      setIsLoggedin(false);
-      console.log(isLoggedin)
+ 
+const getAuthState = async () => {
+  try {
+    const { data } = await axios.get(`${backendUrl}/api/auth/is-auth`);
+    if (data.success) {
+      setIsLoggedin(true);
+      await getUserData();
     }
-  };
+  } catch (error: any) {
+    if (error?.response?.status !== 401) {
+      toast.error(error?.response?.data?.message || "Failed to fetch auth state");
+      setShouldRedirect(true);
+    }
+    setIsLoggedin(false);
+  }
+};
 const getUserData = async () => {
   try {
     const token = localStorage.getItem("token"); // or sessionStorage, wherever you store it
@@ -89,13 +89,18 @@ const getUserData = async () => {
     }
   } catch (error: any) {
     if (error?.response?.status === 401) {
-      toast.error("Session expired. Please log in again.");
       navigate('/login');
+      toast.error("Session expired. Please log in again.");
     } else {
       toast.error(error?.response?.data?.message || "Failed to fetch user data");
     }
   }
 };
+useEffect(() => {
+  if (shouldRedirect) {
+    navigate('/login');
+  }
+}, [shouldRedirect, navigate]);
 
 
   useEffect(() => {
