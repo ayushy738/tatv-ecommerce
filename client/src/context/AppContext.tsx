@@ -8,6 +8,7 @@ import {
   FC,
 } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 
 // Define User data type
@@ -43,6 +44,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   axios.defaults.withCredentials = true;
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL as string;
+  const navigate = useNavigate();
 
   const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -59,6 +61,7 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
     } catch (error: any) {
       if (error?.response?.status !== 401) {
         toast.error(error?.response?.data?.message || "Failed to fetch auth state");
+        navigate('/login');
       }
       setIsLoggedin(false);
       console.log(isLoggedin)
@@ -87,7 +90,7 @@ const getUserData = async () => {
   } catch (error: any) {
     if (error?.response?.status === 401) {
       toast.error("Session expired. Please log in again.");
-      // Optionally redirect to login
+      
     } else {
       toast.error(error?.response?.data?.message || "Failed to fetch user data");
     }
