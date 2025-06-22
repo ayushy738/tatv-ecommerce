@@ -30,6 +30,7 @@ function App() {
               <div className="flex-1 px-4 py-6 text-gray-600 text-base">
                 <Routes>
                   <Route path="/add" element={<Add token={token} />} />
+                  <Route path="/" element={<Add token={token} />} />
                   <Route path="/list" element={<List token={token} />} />
                   <Route path="/orders" element={<Orders token={token} />} />
                   <Route path="*" element={<div>404 - Not Found</div>} />

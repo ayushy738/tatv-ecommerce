@@ -66,9 +66,7 @@ const Navbar: React.FC = () => {
             <Profile />
             
             {/* Mobile Menu */}
-            <Button variant="ghost" size="sm" className="md:hidden p-2">
-              <Menu className="h-5 w-5" />
-            </Button>
+
           </div>
         </div>
         

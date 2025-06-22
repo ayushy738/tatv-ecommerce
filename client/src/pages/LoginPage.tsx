@@ -13,7 +13,7 @@ type AuthState = 'Sign Up' | 'Login';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { backendUrl, setIsLoggedin, getUserData,setToken } = useContext(AppContent) as {
+  const { backendUrl, setIsLoggedin, getUserData, setToken, token } = useContext(AppContent) as {
     backendUrl: string;
     setIsLoggedin: (status: boolean) => void;
     getUserData: () => Promise<void>;
@@ -74,7 +74,6 @@ const Login: React.FC = () => {
     }
   };
   useEffect(() => {
-    const token = localStorage.getItem('token');
     if (token) {
       setToken(token);
       setIsLoggedin(true);
