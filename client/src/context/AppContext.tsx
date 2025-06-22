@@ -56,10 +56,13 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
         await getUserData();
       }
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Failed to fetch auth state");
+      if (error?.response?.status !== 401) {
+        toast.error(error?.response?.data?.message || "Failed to fetch auth state");
+      }
+      setIsLoggedin(false);
     }
   };
-  
+
   const getUserData = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/user/data`);
@@ -89,10 +92,10 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
     setToken,
   };
   useEffect(() => {
-  if (token) {
-    localStorage.setItem('token', token);
-  }
-}, [token]);
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+  }, [token]);
 
 
   return (
