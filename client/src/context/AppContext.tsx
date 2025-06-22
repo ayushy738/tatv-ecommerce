@@ -54,12 +54,14 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
       if (data.success) {
         setIsLoggedin(true);
         await getUserData();
+        console.log(isLoggedin)
       }
     } catch (error: any) {
       if (error?.response?.status !== 401) {
         toast.error(error?.response?.data?.message || "Failed to fetch auth state");
       }
       setIsLoggedin(false);
+      console.log(isLoggedin)
     }
   };
 
@@ -72,7 +74,9 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
         toast.error(data.message);
       }
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Failed to fetch user data");
+      if (error?.response?.status !== 401) {
+        toast.error(error?.response?.data?.message || "Failed to fetch user data");
+      }
     }
   };
 

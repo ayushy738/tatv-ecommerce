@@ -50,7 +50,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
     });
 
-    console.log("Token in Axios call:", token);
 
     if (response.data.success) {
       const cartObj = response.data.cartData;
@@ -90,7 +89,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       setCartItems(cartArr);
-      console.log("User cart fetched successfully:", cartArr);
     } else {
       console.error("API returned failure:", response.data.message);
     }
