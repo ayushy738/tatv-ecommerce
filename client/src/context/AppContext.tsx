@@ -49,7 +49,6 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
   const [isLoggedin, setIsLoggedin] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const getAuthState = async () => {
     try {
@@ -61,9 +60,9 @@ export const AppContextProvider: FC<AppProviderProps> = ({ children }) => {
       }
     } catch (error: any) {
       if (error?.response?.status !== 401) {
-         navigate('/login');
+        
         toast.error(error?.response?.data?.message || "Failed to fetch auth state");
-       
+        navigate('/login');
       }
       setIsLoggedin(false);
       console.log(isLoggedin)
@@ -91,8 +90,8 @@ const getUserData = async () => {
     }
   } catch (error: any) {
     if (error?.response?.status === 401) {
-      navigate('/login');
       toast.error("Session expired. Please log in again.");
+      navigate('/login');
     } else {
       toast.error(error?.response?.data?.message || "Failed to fetch user data");
     }
