@@ -2,7 +2,7 @@
 import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
 
-export const userAuth = async (req, res, next) => {
+const userAuth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -30,3 +30,5 @@ export const userAuth = async (req, res, next) => {
     return res.status(401).json({ message: "Token is not valid" });
   }
 };
+
+export default userAuth;
