@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getProducts, Product } from "../data/products";
 import { useToast } from "@/components/ui/use-toast";
@@ -50,7 +51,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
     });
 
-
     if (response.data.success) {
       const cartObj = response.data.cartData;
       const products = await getProducts();
@@ -101,7 +101,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }
 };
-
 
   const addToCart = async (product: Product, quantity: number, size?: string) => {
     setCartItems(prevItems => {
@@ -188,8 +187,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 };
 
-
-
  const updateQuantity = (productId: string, quantity: number, size?: string) => {
   const parsedQty = Number(quantity);
 
@@ -259,8 +256,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!Array.isArray(cartItems)) return 0;
     return cartItems.reduce((count, item) => count + item.quantity, 0);
   };
-
-
 
   return (
     <CartContext.Provider

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -60,12 +59,12 @@ const BuyNowPage: React.FC = () => {
     );
   }
 
-  const productPrice = product.discountedPrice || product.price;
+  const productPrice = product.price;
   const appliedDiscount = appliedCoupon ? availableCoupons.find(c => c.code === appliedCoupon)?.discount || 0 : 0;
   const discountAmount = (productPrice * appliedDiscount) / 100;
   const deliveryCharge = productPrice > 500 ? 0 : 50;
   const finalPrice = productPrice - discountAmount + deliveryCharge;
-  const totalSavings = product.discountedPrice ? (product.price - product.discountedPrice) + discountAmount : discountAmount;
+  const totalSavings = discountAmount;
 
   const applyCoupon = () => {
     const coupon = availableCoupons.find(c => c.code === couponCode.toUpperCase());
@@ -122,14 +121,7 @@ const BuyNowPage: React.FC = () => {
                     <div className="flex-1">
                       <h3 className="font-semibold text-lg">{product.name}</h3>
                       <div className="flex items-center gap-2 mt-1">
-                        {product.discountedPrice ? (
-                          <>
-                            <span className="text-xl font-bold text-green-600">₹{product.discountedPrice}</span>
-                            <span className="text-sm text-gray-500 line-through">₹{product.price}</span>
-                          </>
-                        ) : (
-                          <span className="text-xl font-bold">₹{product.price}</span>
-                        )}
+                        <span className="text-xl font-bold">₹{product.price}</span>
                       </div>
                       <div className="flex items-center gap-2 mt-2">
                         <Truck className="h-4 w-4 text-green-600" />

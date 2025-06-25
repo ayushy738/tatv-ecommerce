@@ -100,9 +100,9 @@ const WishlistPage: React.FC = () => {
                       <Heart className="h-4 w-4 fill-red-500 text-red-500" />
                     </Button>
                     
-                    {product.discountedPrice && (
-                      <Badge className="absolute top-3 left-3 bg-red-500 text-white">
-                        {Math.round(((product.price - product.discountedPrice) / product.price) * 100)}% OFF
+                    {product.bestseller && (
+                      <Badge className="absolute top-3 left-3 bg-orange-500 text-white">
+                        Bestseller
                       </Badge>
                     )}
                   </div>
@@ -130,14 +130,7 @@ const WishlistPage: React.FC = () => {
                     
                     {/* Price */}
                     <div className="flex items-center gap-2 mb-4">
-                      {product.discountedPrice ? (
-                        <>
-                          <span className="text-xl font-bold text-green-600">₹{product.discountedPrice}</span>
-                          <span className="text-sm text-gray-500 line-through">₹{product.price}</span>
-                        </>
-                      ) : (
-                        <span className="text-xl font-bold text-gray-900">₹{product.price}</span>
-                      )}
+                      <span className="text-xl font-bold text-gray-900">₹{product.price}</span>
                     </div>
                     
                     {/* Stock status */}

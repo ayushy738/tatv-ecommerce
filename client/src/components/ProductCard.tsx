@@ -29,12 +29,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showAddToCart = true
     addToWishlist(product);
   };
 
-  const discountPercentage = product.discountedPrice 
-    ? Math.round(((product.discountedPrice - product.price) / product.discountedPrice) * 100)
-    : 0;
-
-  const showDiscountBadge = product.discountedPrice && discountPercentage > 0;
-  const showBestsellerBadge = !showDiscountBadge && product.bestseller;
   const productImage = Array.isArray(product.image) ? product.image[0] : product.image;
 
   return (
@@ -55,12 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showAddToCart = true
           
           {/* Badges */}
           <div className="absolute top-2 md:top-3 left-2 md:left-3 flex flex-col gap-1">
-            {showDiscountBadge && (
-              <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold text-[10px] md:text-xs px-2 md:px-3 py-1 shadow-md transform transition-transform duration-300 group-hover:scale-105">
-                {discountPercentage}% OFF
-              </Badge>
-            )}
-            {showBestsellerBadge && (
+            {product.bestseller && (
               <Badge className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-bold text-[10px] md:text-xs px-2 md:px-3 py-1 shadow-md transform transition-transform duration-300 group-hover:scale-105">
                 ⭐ Bestseller
               </Badge>
@@ -102,14 +91,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, showAddToCart = true
           
           {/* Price */}
           <div className="flex items-center gap-2 md:gap-3">
-            {product.discountedPrice ? (
-              <>
-                <span className="text-lg md:text-xl lg:text-2xl font-bold text-green-600">₹{product.price}</span>
-                <span className="text-sm md:text-base text-gray-500 line-through">₹{product.discountedPrice}</span>
-              </>
-            ) : (
-              <span className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900">₹{product.price}</span>
-            )}
+            <span className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900">₹{product.price}</span>
           </div>
           
           {/* Add to Cart Button - Only on larger screens or when explicitly shown */}

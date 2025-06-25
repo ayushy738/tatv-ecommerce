@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -56,19 +57,11 @@ const SearchPage: React.FC = () => {
     
     switch (sortBy) {
       case "price-asc":
-        sortProducts.sort((a, b) => {
-          const priceA = a.discountedPrice || a.price;
-          const priceB = b.discountedPrice || b.price;
-          return priceA - priceB;
-        });
+        sortProducts.sort((a, b) => a.price - b.price);
         break;
         
       case "price-desc":
-        sortProducts.sort((a, b) => {
-          const priceA = a.discountedPrice || a.price;
-          const priceB = b.discountedPrice || b.price;
-          return priceB - priceA;
-        });
+        sortProducts.sort((a, b) => b.price - a.price);
         break;
         
       default: // relevance - keep original order

@@ -92,10 +92,6 @@ const ProductPage: React.FC = () => {
     navigate('/cart')
   };
 
-  const discountPercentage = product.discountedPrice 
-    ? Math.round(((product.discountedPrice - product.price) / product.discountedPrice) * 100)
-    : 0;
-
   const deliveryDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', {
     weekday: 'long',
     year: 'numeric',
@@ -119,9 +115,9 @@ const ProductPage: React.FC = () => {
                   alt={product.name}
                   className="w-full h-96 object-cover"
                 />
-                {discountPercentage > 0 && (
-                  <Badge className="absolute top-4 left-4 bg-red-500 text-white">
-                    {discountPercentage}% OFF
+                {product.bestseller && (
+                  <Badge className="absolute top-4 left-4 bg-orange-500 text-white">
+                    Bestseller
                   </Badge>
                 )}
               </div>
@@ -161,13 +157,9 @@ const ProductPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Price - Always show discounted price */}
+              {/* Price */}
               <div className="flex items-center gap-4">
-                <span className="text-3xl font-bold text-green-600">₹{product.price}</span>
-                <span className="text-xl text-gray-500 line-through">₹{product.discountedPrice}</span>
-                <span className="text-lg text-green-600 font-semibold">
-                  Save ₹{product.discountedPrice - (product.price || 0)}
-                </span>
+                <span className="text-3xl font-bold text-gray-900">₹{product.price}</span>
               </div>
 
               {/* Size Selection */}

@@ -36,8 +36,6 @@ interface RazorpayPaymentResponse {
   razorpay_signature: string;
 }
 
-
-
 const CheckoutPage: React.FC = () => {
   const { cartItems, getCartTotal, setCartItems, clearCart } = useCart();
   const [formData, setFormData] = useState({
@@ -239,7 +237,6 @@ const CheckoutPage: React.FC = () => {
                       <Input onChange={onChangeHandler} name="email" value={formData.email} id="email" placeholder="Enter Email Address" required type="email" />
                     </div>
 
-
                     <div>
                       <label htmlFor="street" className="block text-sm font-medium mb-2">
                         Street Address *
@@ -367,7 +364,7 @@ const CheckoutPage: React.FC = () => {
                           </div>
                           <div className="text-right">
                             <p className="font-medium text-sm">
-                              ₹{((item.product.discountedPrice || item.product.price) * item.quantity).toFixed(2)}
+                              ₹{(item.product.price * item.quantity).toFixed(2)}
                             </p>
                           </div>
                         </div>
@@ -425,5 +422,3 @@ const CheckoutPage: React.FC = () => {
 };
 
 export default CheckoutPage;
-
-
