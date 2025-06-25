@@ -64,11 +64,6 @@ const FAQPage: React.FC = () => {
       answer: "Yes, our payment gateway is secured with 256-bit SSL encryption. We never store your payment information on our servers."
     },
     {
-      category: "payment",
-      question: "Can I pay with a gift card?",
-      answer: "Yes, you can use Tatv gift cards during checkout. The gift card amount will be deducted from your total order value."
-    },
-    {
       category: "returns",
       question: "What is your return policy?",
       answer: "We offer a 30-day return policy for most products. Items should be in original condition with tags attached. Some products like undergarments and cosmetics cannot be returned."

@@ -41,7 +41,7 @@ const App = () => (
     <AppContextProvider>
       <CartProvider>
         <WishlistProvider>
-          <BrowserRouter>
+          
             <ToastContainer />
             <TooltipProvider>
               <Toaster />
@@ -73,7 +73,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </TooltipProvider>
-          </BrowserRouter>
+          
         </WishlistProvider>
       </CartProvider>
     </AppContextProvider>

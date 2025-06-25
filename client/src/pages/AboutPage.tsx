@@ -6,12 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, Truck, Clock, Heart, Award, Users } from "lucide-react";
 
 const AboutPage: React.FC = () => {
-  const stats = [
-    { label: "Happy Customers", value: "50K+", icon: <Users className="h-8 w-8" /> },
-    { label: "Products Sold", value: "100K+", icon: <Award className="h-8 w-8" /> },
-    { label: "Years of Trust", value: "5+", icon: <Shield className="h-8 w-8" /> },
-    { label: "Fast Delivery", value: "24hrs", icon: <Truck className="h-8 w-8" /> }
-  ];
+
 
   const values = [
     {
@@ -57,17 +52,7 @@ const AboutPage: React.FC = () => {
         <section className="py-16 bg-white">
           <div className="container">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <Card key={index} className="text-center p-6 border-0 shadow-lg hover:shadow-xl transition-shadow">
-                  <CardContent className="p-0">
-                    <div className="flex justify-center mb-4 text-blue-600">
-                      {stat.icon}
-                    </div>
-                    <h3 className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</h3>
-                    <p className="text-gray-600">{stat.label}</p>
-                  </CardContent>
-                </Card>
-              ))}
+             
             </div>
           </div>
         </section>
@@ -88,11 +73,6 @@ const AboutPage: React.FC = () => {
                     quality products at affordable prices.
                   </p>
                   <p>
-                    Today, we've grown into a trusted platform serving thousands of customers 
-                    across the country. Our commitment to excellence, customer satisfaction, and 
-                    innovation continues to drive us forward.
-                  </p>
-                  <p>
                     We carefully curate our product selection, working directly with manufacturers 
                     and trusted suppliers to ensure authenticity, quality, and competitive pricing.
                   </p>
@@ -104,10 +84,6 @@ const AboutPage: React.FC = () => {
                   alt="Our team"
                   className="rounded-2xl shadow-2xl"
                 />
-                <div className="absolute -bottom-6 -left-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-xl shadow-xl">
-                  <p className="text-lg font-bold">5+ Years</p>
-                  <p className="text-sm">of Excellence</p>
-                </div>
               </div>
             </div>
           </div>

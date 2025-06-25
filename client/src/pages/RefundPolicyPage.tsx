@@ -12,7 +12,7 @@ const RefundPolicyPage: React.FC = () => {
       icon: <RotateCcw className="h-6 w-6 text-blue-600" />,
       title: "Return Policy",
       content: [
-        "Items can be returned within 30 days of delivery for a full refund.",
+        "Items can be returned within 7 days of delivery for a full refund.",
         "Products must be in original condition with all tags, packaging, and accessories.",
         "Items should be unworn, unused, and in the same condition as received.",
         "Return shipping costs will be borne by the customer unless the item is defective."
@@ -61,7 +61,7 @@ const RefundPolicyPage: React.FC = () => {
   ];
 
   const timeline = [
-    { step: "1", title: "Request Return", description: "Initiate return within 30 days", time: "Day 1" },
+    { step: "1", title: "Request Return", description: "Initiate return within 7 days", time: "Day 1" },
     { step: "2", title: "Ship Item", description: "Send item back to us", time: "Day 2-5" },
     { step: "3", title: "Inspection", description: "We inspect the returned item", time: "Day 6-8" },
     { step: "4", title: "Refund", description: "Refund processed to your account", time: "Day 9-15" }

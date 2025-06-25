@@ -42,19 +42,19 @@ const ContactPage: React.FC = () => {
     {
       icon: <MapPin className="h-6 w-6 text-blue-600" />,
       title: "Visit Our Office",
-      details: ["123 Business Avenue", "Mumbai, Maharashtra 400001", "India"],
+      details: ["123 Business Avenue", "Hyderabad, Telengana", "India"],
       action: "Get Directions"
     },
     {
       icon: <Phone className="h-6 w-6 text-green-600" />,
       title: "Call Us",
-      details: ["+91 98765 43210", "+91 87654 32109", "Mon-Sat: 9AM-7PM"],
+      details: ["+91 91555 23819", "+91 87654 32109", "Mon-Sat: 9AM-7PM"],
       action: "Call Now"
     },
     {
       icon: <Mail className="h-6 w-6 text-purple-600" />,
       title: "Email Us",
-      details: ["support@tatv.com", "sales@tatv.com", "Quick response within 24hrs"],
+      details: ["tatvecommerce@gmail.com","Quick response within 24hrs"],
       action: "Send Email"
     },
     {
@@ -72,7 +72,7 @@ const ContactPage: React.FC = () => {
     },
     {
       question: "How can I track my order?",
-      answer: "You can track your order by visiting the 'My Orders' section in your account or using the tracking number sent to your email."
+      answer: "You can track your order by visiting the 'My Orders' section in your account."
     },
     {
       question: "Do you offer international shipping?",
@@ -80,7 +80,7 @@ const ContactPage: React.FC = () => {
     },
     {
       question: "What is your return policy?",
-      answer: "We offer a 30-day return policy for most items. Products should be in original condition with tags attached."
+      answer: "We offer a 7-day return policy for most items. Products should be in original condition with tags attached."
     }
   ];
 
@@ -134,7 +134,7 @@ const ContactPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Contact Form */}
+        {/* Contact Form
         <section className="py-16 bg-gray-50">
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -255,7 +255,7 @@ const ContactPage: React.FC = () => {
               </Card>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* FAQ Section */}
         <section className="py-16 bg-white">
@@ -289,7 +289,7 @@ const ContactPage: React.FC = () => {
         </section>
 
         {/* Map Section */}
-        <section className="py-16 bg-gray-100">
+        {/* <section className="py-16 bg-gray-100">
           <div className="container">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Visit Our Office</h2>
@@ -304,7 +304,7 @@ const ContactPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
       
       <Footer />

@@ -71,35 +71,6 @@ export default function OrdersPage() {
     }
   };
 
-  const cancelOrder = async (orderId: string) => {
-    if (!token) return;
-    
-    setCancellingOrders(prev => new Set(prev).add(orderId));
-    
-    try {
-      const response = await axios.post(
-        `${backendUrl}/api/order/cancel`,
-        { orderId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      
-      if (response.data.success) {
-        toast.success("Order cancelled successfully");
-        loadOrderData(); // Refresh orders
-      } else {
-        toast.error(response.data.message || "Failed to cancel order");
-      }
-    } catch (err: any) {
-      console.error(err);
-      toast.error(err?.response?.data?.message || "Failed to cancel order");
-    } finally {
-      setCancellingOrders(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(orderId);
-        return newSet;
-      });
-    }
-  };
 
   const canCancelOrder = (status: string) => {
     return ['OrderPlaced', 'Packing'].includes(status);
@@ -114,6 +85,9 @@ export default function OrdersPage() {
       <Navbar />
       <div className="container mx-auto px-4 py-6 md:py-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">My Orders</h1>
+        <p className="mb-6 text-center text-sm text-gray-500 bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-4">
+          To cancel order, email <a href="mailto:tatvecommerce@gmail.com" className="text-blue-600 underline">tatvecommerce@gmail.com</a> or call <a href="tel:+917794033470" className="text-blue-600 underline">+91 77940 33470</a>
+        </p>
 
         {orders.length === 0 ? (
           <div className="text-center py-12 md:py-16">
@@ -158,17 +132,6 @@ export default function OrdersPage() {
                       {order.status}
                     </span>
                     
-                    {canCancelOrder(order.status) && (
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => cancelOrder(order._id)}
-                        disabled={cancellingOrders.has(order._id)}
-                        className="text-xs"
-                      >
-                        {cancellingOrders.has(order._id) ? 'Cancelling...' : 'Cancel Order'}
-                      </Button>
-                    )}
                   </div>
                 </div>
 

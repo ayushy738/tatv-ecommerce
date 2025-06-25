@@ -28,13 +28,13 @@ const Footer: React.FC = () => {
                 Your premium destination for everything trendy and essential. Shop the future with confidence.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="w-8 h-8 md:w-10 md:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
+                {/* <a href="https://www.instagram.com/tatvshop/" className="w-8 h-8 md:w-10 md:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
                   <span className="text-xs md:text-sm font-bold">f</span>
-                </a>
-                <a href="#" className="w-8 h-8 md:w-10 md:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-400 transition-colors">
+                </a> */}
+                <a href="https://x.com/tatvshop" className="w-8 h-8 md:w-10 md:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-400 transition-colors">
                   <span className="text-xs md:text-sm font-bold">t</span>
                 </a>
-                <a href="#" className="w-8 h-8 md:w-10 md:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors">
+                <a href="https://www.instagram.com/tatvshop/" className="w-8 h-8 md:w-10 md:h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors">
                   <span className="text-xs md:text-sm font-bold">i</span>
                 </a>
               </div>

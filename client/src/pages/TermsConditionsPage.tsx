@@ -42,7 +42,7 @@ const TermsConditionsPage: React.FC = () => {
       title: "Delivery and Returns",
       content: [
         "Delivery times are estimates and may vary based on location and product availability.",
-        "Returns must be initiated within 30 days of delivery for eligible items.",
+        "Returns must be initiated within 7 days of delivery for eligible items.",
         "Items must be returned in original condition with all tags and packaging.",
         "Refund processing may take 5-10 business days after we receive the returned item."
       ]
@@ -106,9 +106,9 @@ const TermsConditionsPage: React.FC = () => {
                     If you have any questions about these Terms and Conditions, please contact us:
                   </p>
                   <ul className="text-gray-600 space-y-1 text-sm md:text-base">
-                    <li>Email: legal@tatv.com</li>
-                    <li>Phone: +91 98765 43210</li>
-                    <li>Address: 123 Business Avenue, Mumbai, Maharashtra 400001</li>
+                    <li>Email: tatvecommerce@gmail.com</li>
+                    <li>Phone: +91 77940 33470</li>
+                    <li>Address: 123 Business Avenue, Hyderabad, Telengana</li>
                   </ul>
                 </CardContent>
               </Card>

@@ -109,9 +109,9 @@ const PrivacyPolicyPage: React.FC = () => {
                     If you have questions about this Privacy Policy or your personal data:
                   </p>
                   <ul className="text-gray-600 space-y-1 text-sm md:text-base">
-                    <li>Email: privacy@tatv.com</li>
-                    <li>Phone: +91 98765 43210</li>
-                    <li>Address: 123 Business Avenue, Mumbai, Maharashtra 400001</li>
+                    <li>Email: tatvecommerce@gmail.com</li>
+                    <li>Phone: +91 77940 33470</li>
+                    <li>Address: 123 Business Avenue, Hyderabad, Telengana</li>
                   </ul>
                 </CardContent>
               </Card>
