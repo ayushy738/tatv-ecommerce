@@ -28,6 +28,9 @@ import FAQPage from "./pages/FAQPage";
 import ShippingInfoPage from "./pages/ShippingInfoPage";
 import CategoryPage from "./pages/CategoryPage";
 import ShoppingAssistantPage from "./pages/ShoppingAssistantPage";
+import TermsConditionsPage from "./pages/TermsConditionsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import RefundPolicyPage from "./pages/RefundPolicyPage";
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css' 
 
@@ -38,12 +41,12 @@ const App = () => (
     <AppContextProvider>
       <CartProvider>
         <WishlistProvider>
-          <ToastContainer />
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            
-            
+          <BrowserRouter>
+            <ToastContainer />
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              
               <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/search" element={<SearchPage />} />
@@ -61,14 +64,16 @@ const App = () => (
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/faq" element={<FAQPage />} />
                 <Route path="/shipping-info" element={<ShippingInfoPage />} />
+                <Route path="/terms-conditions" element={<TermsConditionsPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                <Route path="/refund-policy" element={<RefundPolicyPage />} />
                 <Route path="/category/:categoryId" element={<CategoryPage />} />
                 <Route path="/shopping-assistant" element={<ShoppingAssistantPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
-            
-            
-          </TooltipProvider>
+            </TooltipProvider>
+          </BrowserRouter>
         </WishlistProvider>
       </CartProvider>
     </AppContextProvider>

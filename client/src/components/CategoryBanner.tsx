@@ -15,13 +15,6 @@ const CategoryBanner: React.FC = () => {
       bgColor: 'bg-gradient-to-r from-red-500 to-pink-500',
       link: '/search?q=women'
     },
-    // {
-    //   type: 'sale',
-    //   title: 'Weekend Deal',
-    //   subtitle: 'Buy Footwear less than Rs.999',
-    //   bgColor: 'bg-gradient-to-r from-green-500 to-teal-500',
-    //   link: '/search?q=shoes'
-    // },
     ...categories.map(category => ({
       type: 'category',
       title: category.name,
@@ -42,21 +35,21 @@ const CategoryBanner: React.FC = () => {
   const currentItem = bannerItems[currentIndex];
 
   return (
-    <div className="mb-8 overflow-hidden rounded-2xl">
+    <div className="mb-6 md:mb-8 overflow-hidden rounded-xl md:rounded-2xl mx-4 md:mx-0">
       <Link to={currentItem.link}>
-        <div className={`${currentItem.bgColor} p-6 text-white transition-all duration-500`}>
+        <div className={`${currentItem.bgColor} p-4 md:p-6 text-white transition-all duration-500`}>
           <div className="flex items-center justify-between">
-            <div>
+            <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <Badge variant="secondary" className="bg-white/20 text-white">
+                <Badge variant="secondary" className="bg-white/20 text-white text-xs">
                   {currentItem.type === 'sale' ? 'Limited Time' : 'Category'}
                 </Badge>
               </div>
-              <h3 className="text-2xl font-bold mb-1">{currentItem.title}</h3>
-              <p className="text-white/90">{currentItem.subtitle}</p>
+              <h3 className="text-xl md:text-2xl font-bold mb-1">{currentItem.title}</h3>
+              <p className="text-white/90 text-sm md:text-base">{currentItem.subtitle}</p>
             </div>
-            <div className="text-right">
-              <div className="text-sm opacity-75">
+            <div className="text-right ml-4">
+              <div className="text-xs md:text-sm opacity-75">
                 {currentIndex + 1} / {bannerItems.length}
               </div>
             </div>
@@ -65,12 +58,12 @@ const CategoryBanner: React.FC = () => {
       </Link>
       
       {/* Dots indicator */}
-      <div className="flex justify-center mt-4 gap-2">
+      <div className="flex justify-center mt-3 md:mt-4 gap-2 px-4 md:px-0">
         {bannerItems.map((_, index) => (
           <button
             key={index}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentIndex ? 'bg-blue-600 w-6' : 'bg-gray-300'
+              index === currentIndex ? 'bg-blue-600 w-4 md:w-6' : 'bg-gray-300'
             }`}
             onClick={() => setCurrentIndex(index)}
           />

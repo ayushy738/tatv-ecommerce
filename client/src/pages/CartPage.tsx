@@ -86,7 +86,7 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="flex items-center mt-2 sm:mt-0">
                             <span className="font-medium">
-                              ₹{((item.product.discountedPrice || item.product.price) * item.quantity).toFixed(2)}
+                              ₹{((item.product.price) * item.quantity).toFixed(2)}
                             </span>
                           </div>
                         </div>
