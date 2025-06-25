@@ -19,7 +19,7 @@ connectDB()
 connectCloudinary()
 
 const allowedOrigins = [
-  'http://localhost:8080','http://localhost:8081','https://tatv-ecommerce-frontend.vercel.app','https://tatv-ecommerce-admin.vercel.app',"https://www.tatv.shop", "https://www.admin.tatv.shop"
+  'http://localhost:8080','http://localhost:8081','https://tatv-ecommerce-frontend.vercel.app','https://tatv-ecommerce-admin.vercel.app',"https://www.tatv.shop", "https://admin.tatv.shop"
   // 'https://your-production-domain.com', // Replace with your production domain
 ]
 
