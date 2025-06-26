@@ -141,7 +141,7 @@ export default function OrdersPage() {
                         {item.sizes[0] && <p className="text-sm text-gray-500">Size: {item.sizes[0]}</p>}
                         <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                       </div>
-                      <p className="font-semibold">₹{item.discountedPrice}</p>
+                      <p className="font-semibold">₹{item.price}</p>
                     </div>
                   ))}
                 </div>
