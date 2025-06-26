@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AppContent } from "../context/AppContext";
@@ -8,7 +7,6 @@ import { cn } from '@/lib/utils';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Button } from "@/components/ui/button";
-import { toast } from "react-toastify";
 
 interface OrderItem {
   id: string;
@@ -53,7 +51,6 @@ const statusColorMap: Record<string, string> = {
 export default function OrdersPage() {
   const { backendUrl, token } = useContext(AppContent);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [cancellingOrders, setCancellingOrders] = useState<Set<string>>(new Set());
 
   const loadOrderData = async () => {
     if (!token) return;
@@ -71,21 +68,17 @@ export default function OrdersPage() {
     }
   };
 
-
-  const canCancelOrder = (status: string) => {
-    return ['OrderPlaced', 'Packing'].includes(status);
-  };
-
   useEffect(() => {
     loadOrderData();
   }, [token]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+
+    <div className="">
       <Navbar />
-      <div className="container mx-auto px-4 py-6 md:py-8">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">My Orders</h1>
-        <p className="mb-6 text-center text-sm text-gray-500 bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-4">
+      <div className="mx-5 p-4">
+        <h1 className="text-2xl font-bold mb-6">My Orders</h1>
+<p className="mb-6 text-center text-sm text-gray-500 bg-yellow-50 border border-yellow-200 rounded-lg py-2 px-4">
           To cancel order, email <a href="mailto:tatvecommerce@gmail.com" className="text-blue-600 underline">tatvecommerce@gmail.com</a> or call <a href="tel:+917794033470" className="text-blue-600 underline">+91 77940 33470</a>
         </p>
 
@@ -103,14 +96,14 @@ export default function OrdersPage() {
             </Button>
           </div>
         ) : (
-          <div className="space-y-4 md:space-y-6">
+          <div className="space-y-6">
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="border border-gray-200 rounded-xl shadow-sm p-4 md:p-6 bg-white"
+                className="border border-gray-200 rounded-xl shadow-sm p-4 bg-white"
               >
-                <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4 space-y-3 md:space-y-0">
-                  <div className="space-y-1">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
                     <h2 className="font-semibold text-lg">Order #{order._id.slice(-6)}</h2>
                     <p className="text-sm text-gray-600">
                       Placed on: {format(new Date(order.date), 'dd MMM yyyy, hh:mm a')}
@@ -122,67 +115,56 @@ export default function OrdersPage() {
                     </p>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                    <span
-                      className={cn(
-                        'px-3 py-1 text-xs font-medium rounded-full',
-                        statusColorMap[order.status] || 'bg-gray-200 text-gray-800'
-                      )}
-                    >
-                      {order.status}
-                    </span>
-                    
-                  </div>
+                  <span
+                    className={cn(
+                      'px-3 py-1 text-xs font-medium rounded-full',
+                      statusColorMap[order.status] || 'bg-gray-200 text-gray-800'
+                    )}
+                  >
+                    {order.status}
+                  </span>
                 </div>
 
-                <div className="space-y-4">
+                <div className="grid gap-4">
                   {order.items.map((item) => (
                     <div
                       key={item.id + item.sizes.join(',')}
-                      className="flex items-center gap-3 md:gap-4 border-t pt-4"
+                      className="flex items-center gap-4 border-t pt-4"
                     >
                       <img
                         src={item.image[0]}
                         alt={item.name}
-                        className="w-12 h-12 md:w-16 md:h-16 object-cover rounded"
+                        className="w-16 h-16 object-cover rounded"
                       />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm md:text-base truncate">{item.name}</p>
+                      <div className="flex-1">
+                        <p className="font-medium">{item.name}</p>
                         {item.sizes[0] && <p className="text-sm text-gray-500">Size: {item.sizes[0]}</p>}
                         <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                       </div>
-                      <p className="font-semibold text-sm md:text-base">₹{item.discountedPrice}</p>
+                      <p className="font-semibold">₹{item.discountedPrice}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                  <h3 className="font-semibold mb-2 text-sm md:text-base">Shipping Address</h3>
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <p>{order.address.firstName} {order.address.lastName}</p>
-                    <p>{order.address.street}, {order.address.city}</p>
-                    <p>{order.address.state} - {order.address.zipcode}</p>
-                    <p>{order.address.country}</p>
-                    <p>Phone: {order.address.phone}</p>
-                  </div>
+                <div className="mt-6 text-sm text-gray-600">
+                  <h3 className="font-semibold mb-1">Shipping Address</h3>
+                  <p>{order.address.firstName} {order.address.lastName}</p>
+                  <p>{order.address.street}, {order.address.city}</p>
+                  <p>{order.address.state} - {order.address.zipcode}</p>
+                  <p>{order.address.country}</p>
+                  <p>Phone: {order.address.phone}</p>
                 </div>
-                
-                <div className="flex flex-col sm:flex-row gap-3 mt-4">
-                  <Button
-                    onClick={loadOrderData}
-                    variant="outline"
-                    size="sm"
-                    className="text-sm"
-                  >
-                    Refresh Status
-                  </Button>
-                </div>
+                <button
+                  onClick={loadOrderData}
+                  className="px-4 py-2 mt-2 text-sm font-medium bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+                >
+                  Refresh Status
+                </button>
               </div>
             ))}
           </div>
         )}
       </div>
-      <Footer />
-    </div>
+    </div >
   );
 }
