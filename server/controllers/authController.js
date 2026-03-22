@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import userModel from '../models/userModel.js';
 import transporter from '../config/nodemailer.js';
 import validator from 'validator';
-import { EMAIL_VERIFY_TEMPLATE,PASSWORD_RESET_TEMPLATE } from '../config/emailTemplates.js';
+import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE } from '../config/emailTemplates.js';
 
 const createToken = (userId) => {
     return jwt.sign({ id: userId }, process.env.JWT_SECRET);
@@ -24,10 +24,10 @@ export const register = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
-        if(!validator.isEmail(email)){
+        if (!validator.isEmail(email)) {
             return res.status(400).json({ message: "Invalid email format" });
         }
-        if(password.length < 8){
+        if (password.length < 8) {
             return res.status(400).json({ message: "Password must be at least 8 characters long" });
         }
         // Hash password
@@ -38,27 +38,33 @@ export const register = async (req, res) => {
         const newUser = new userModel({ name, email, password: hashedPassword });
         await newUser.save();
         // Generate JWT token
-        const token = createToken(newUser._id); 
+        const token = createToken(newUser._id);
         // Set token in cookie
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            sameSite: process.env.NODE_ENV === 'production'?'none':'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 
-           // Respond with success message
+        // Respond with success message
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
             subject: "Login Notification",
             text: `Hello ${newUser.name},\n\nYou have successfully logged in to your account.\n\nBest regards,\nYour Team`
-            ,html: `<p>Hello ${newUser.name},</p><p>You have successfully logged in to your account.</p><p>Best regards,<br>Your Team</p>`
+            , html: `<p>Hello ${newUser.name},</p><p>You have successfully logged in to your account.</p><p>Best regards,<br>Your Team</p>`
         };
 
         await transporter.sendMail(mailOptions);
-
-        res.status(201).json({ message: "User registered successfully" ,token});
+        await req.app.locals.redisClient.set(
+            `token:${newUser._id}`,
+            token,
+            {
+                EX: 60 * 60 * 24 * 7,
+            }
+        );
+        res.status(201).json({ message: "User registered successfully", token });
     } catch (error) {
         console.error("Registration error:", error);
         res.status(500).json({ message: "Server error" });
@@ -92,10 +98,17 @@ export const login = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            sameSite: process.env.NODE_ENV === 'production'?'none':'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
-        res.json({success: true, token});
+        await req.app.locals.redisClient.set(
+            `token:${user._id}`,
+            token,
+            {
+                EX: 60 * 60 * 24 * 7, // 7 days expiry
+            }
+        );
+        res.json({ success: true, token });
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ message: "Server error" });
@@ -103,20 +116,31 @@ export const login = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-    try {
-        // Clear the cookie
-        res.clearCookie('token', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            sameSite: process.env.NODE_ENV === 'production'?'none':'strict'
-        });
+  try {
+    const token = req.cookies.token;
 
-        res.status(200).json({ message: "Logout successful" });
-    } catch (error) {
-        console.error("Logout error:", error);
-        res.status(500).json({ message: "Server error" });
+    if (!token) {
+      return res.status(400).json({ message: "No token found" });
     }
-}
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // ✅ delete from redis
+    await req.app.locals.redisClient.del(`token:${decoded.id}`);
+
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+    });
+
+    res.status(200).json({ message: "Logout successful" });
+
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 export const sendVerifyOtp = async (req, res) => {
     const { email } = req.body;
@@ -157,7 +181,7 @@ export const sendVerifyOtp = async (req, res) => {
         console.error("Send OTP error:", error);
         res.status(500).json({ message: "Server error" });
     }
-} 
+}
 
 export const verifyEmail = async (req, res) => {
     const { otp } = req.body;
@@ -224,7 +248,7 @@ export const sendResetOtp = async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: "User not found" });
         }
-        
+
         // Generate reset OTP
         const resetOtp = Math.floor(100000 + Math.random() * 900000).toString();
         user.resetOtp = resetOtp;
@@ -263,7 +287,7 @@ export const resetPassword = async (req, res) => {
         if (!user) {
             return res.status(400).json({ message: "User not found" });
         }
-        
+
         // Check reset OTP validity
         if (user.resetOtp !== otp || Date.now() > user.resetOtpExpiresAt) {
             return res.status(400).json({ message: "Invalid or expired OTP" });
@@ -285,11 +309,11 @@ export const resetPassword = async (req, res) => {
 
 export const adminLogin = async (req, res) => {
     const { email, password } = req.body;
-    if(email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
-        const token = jwt.sign({email},process.env.JWT_SECRET,{ expiresIn: '7d' });
-        res.json({success: true, token});
-    }else{
-        res.status(400).json({message: "Invalid admin credentials",success: false}); 
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.json({ success: true, token });
+    } else {
+        res.status(400).json({ message: "Invalid admin credentials", success: false });
     }
 
     // Validate input
@@ -316,7 +340,7 @@ export const adminLogin = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-            sameSite: process.env.NODE_ENV === 'production'?'none':'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
 

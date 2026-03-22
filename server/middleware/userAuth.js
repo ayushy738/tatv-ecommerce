@@ -22,7 +22,11 @@ const userAuth = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    const storedToken = await req.app.locals.redisClient.get(`token:${decoded.id}`);
 
+    if (!storedToken || storedToken !== token) {
+      return res.status(401).json({ message: "Session expired" });
+    }
     // Attach user to request object
     req.user = user;
     next();
