@@ -15,6 +15,16 @@ import connectCloudinary from './config/cloudinary.js'
 import productRouter from './routes/productRoutes.js'
 import orderRouter from './routes/orderRoutes.js'
 
+import { createClient } from "redis";
+
+const redisClient = createClient({
+  url: process.env.REDIS_URL,
+});
+
+redisClient.connect()
+  .then(() => console.log("✅ Redis Connected"))
+  .catch(console.error);
+
 connectDB()
 connectCloudinary()
 
@@ -22,6 +32,7 @@ const allowedOrigins = [
   'http://localhost:8080','http://localhost:8081','https://tatv-ecommerce-frontend.vercel.app','https://tatv-ecommerce-admin.vercel.app',"https://www.tatv.shop", "https://admin.tatv.shop"
   // 'https://your-production-domain.com', // Replace with your production domain
 ]
+
 
 app.use(cors({origin:allowedOrigins,credentials : true}))
 app.use(cookieParser())
@@ -41,4 +52,5 @@ app.use('/api/order', orderRouter)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
-//mongodb+srv://tatvecommerce:tatv@2025@userdata.3e7suvm.mongodb.net/
+
+app.locals.redisClient = redisClient;
