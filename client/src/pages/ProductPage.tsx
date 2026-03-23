@@ -261,7 +261,7 @@ const ProductPage: React.FC = () => {
                     <div className="flex items-center gap-3">
                       <RotateCcw className="h-5 w-5 text-blue-600" />
                       <div>
-                        <p className="font-medium">Easy 30-day returns</p>
+                        <p className="font-medium">Easy 7-day returns</p>
                         <p className="text-sm text-gray-500">No questions asked</p>
                       </div>
                     </div>
